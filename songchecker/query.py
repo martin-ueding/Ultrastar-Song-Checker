@@ -20,6 +20,11 @@ def main(options):
         artist_obj = model.session.query(model.Artist).filter(model.Artist.name == options.artist).one()
         query = query.filter(model.Song.artist == artist_obj)
 
+    if options.has_video is not None:
+        print('Filtering has_video “{}”.'.format(options.has_video))
+        has_video = True if options.has_video == 'true' else False
+        query = query.filter(model.Song.has_video == has_video)
+
     results = query.all()
 
     pp = pprint.PrettyPrinter()
