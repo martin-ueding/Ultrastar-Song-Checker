@@ -45,6 +45,7 @@ def main():
 
     query_missing_group.add_argument('--missing-genre', action='store_true')
     query_missing_group.add_argument('--missing-year', action='store_true')
+    query_missing_group.add_argument('--missing-language', action='store_true')
 
     options = parser.parse_args()
 

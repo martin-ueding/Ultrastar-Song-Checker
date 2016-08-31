@@ -40,11 +40,13 @@ def main(options, session):
 
     results = query.all()
 
-    if options.missing_genre or options.missing_year:
+    if options.missing_genre or options.missing_year or options.missing_language:
         results = [song
                    for song in results
                    if (options.missing_genre and len(song.genres) == 0)
-                   or (options.missing_year and song.year is None)]
+                   or (options.missing_year and song.year is None)
+                   or (options.missing_language and song.language is None)
+                  ]
 
     if len(results) == 0:
         print()
