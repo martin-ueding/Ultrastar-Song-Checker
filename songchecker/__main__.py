@@ -9,7 +9,7 @@ import songchecker.parser
 def main():
     parser = argparse.ArgumentParser(description='Helpers for Ultrastar')
     parser.set_defaults(func=None)
-    parser.set_argument('--dbfile', default='ultrastar.sqlite', help=
+    parser.add_argument('--dbfile', default='ultrastar.sqlite', help='path to SQLite database file')
 
     subparsers = parser.add_subparsers()
 
@@ -23,7 +23,7 @@ def main():
     if options.func is not None:
         options.func(options)
     else:
-        argparser.error('A subcommand needs to be given.')
+        parser.error('A subcommand needs to be given.')
 
 
 if __name__ == '__main__':

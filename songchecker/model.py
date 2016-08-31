@@ -2,20 +2,25 @@
 # Copyright © 2016 Martin Ueding <dev@martin-ueding.de>
 
 from sqlalchemy import create_engine
-from sqlalchemy import Column, Integer, String, Boolean
+from sqlalchemy import Column, Integer, String, Boolean, Table, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import ForeignKey
 from sqlalchemy.orm import relationship, sessionmaker
 
-engine = create_engine('sqlite:///songs.sqlite', echo=True)
+engine = create_engine('sqlite:///songs.sqlite', echo=False)
 
 Base = declarative_base()
+
+genres_songs_table = Table('genres_songs', Base.metadata,
+    Column('song_id', Integer, ForeignKey('songs.id')),
+    Column('genre_id', Integer, ForeignKey('genres.id'))
+)
+
 
 class Artist(Base):
     __tablename__ = 'artists'
 
     id = Column(Integer, primary_key=True)
-    name = Column(String)
+    name = Column(String, unique=True)
 
     songs = relationship('Song', back_populates='artist')
 
@@ -35,7 +40,8 @@ class Song(Base):
     artist_id = Column(Integer, ForeignKey('artists.id'))
     artist = relationship('Artist', back_populates=__tablename__)
 
-    #genre = Column
+    genres = relationship('Genre', secondary=genres_songs_table,
+                          back_populates='songs')
 
 
 class Language(Base):
@@ -45,6 +51,17 @@ class Language(Base):
     name = Column(String)
 
     songs = relationship('Song', back_populates='language')
+
+
+class Genre(Base):
+    __tablename__ = 'genres'
+
+    id = Column(Integer, primary_key=True)
+    name = Column(String)
+
+    songs = relationship('Song', secondary=genres_songs_table,
+                         back_populates='genres')
+
 
 Base.metadata.create_all(engine)
 
