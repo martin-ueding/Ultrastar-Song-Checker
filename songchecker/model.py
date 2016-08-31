@@ -89,5 +89,3 @@ class Genre(Base):
 
     def __repr__(self):
         return 'Genre(name={})'.format(repr(self.name))
-
-

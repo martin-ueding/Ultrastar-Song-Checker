@@ -123,8 +123,6 @@ def main(options, session):
                     else:
                         for_db['language'] = languages_obj[0]
 
-
-
                 if 'GENRE' in data:
                     genres = data['GENRE'].split(',')
                     for_db['genres'] = []
