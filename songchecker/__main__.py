@@ -66,6 +66,5 @@ def init_db(options):
     return session
 
 
-
 if __name__ == '__main__':
     main()
