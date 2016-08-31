@@ -16,7 +16,7 @@ def main():
 
     gendb_parser = subparsers.add_parser('gendb', description='Generate a SQLite database from the song metadata')
     gendb_parser.set_defaults(func=songchecker.parser.main)
-    gendb_parser.add_argument('directory', nargs='+', help='directory to scan')
+    gendb_parser.add_argument('directory', nargs='+', help='directory to scan recursively')
     gendb_parser.add_argument('--verify', action='store_true', help='verify existence of audio and video file', default=False)
     gendb_parser.add_argument('--print-data', action='store_true', help='pretty print read data', default=False)
 
