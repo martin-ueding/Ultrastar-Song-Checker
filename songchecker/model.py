@@ -2,7 +2,7 @@
 # Copyright © 2016 Martin Ueding <dev@martin-ueding.de>
 
 from sqlalchemy import create_engine
-from sqlalchemy import Column, Integer, String, Boolean, Table, ForeignKey
+from sqlalchemy import Column, Integer, String, Boolean, Table, ForeignKey, Float
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship, sessionmaker
 
@@ -36,7 +36,7 @@ class Song(Base):
 
     id = Column(Integer, primary_key=True)
     title = Column(String, nullable=False)
-    bpm = Column(Integer, nullable=True)
+    bpm = Column(Float, nullable=True)
     has_video = Column(Boolean, nullable=False)
     year = Column(Integer, nullable=True)
 

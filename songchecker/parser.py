@@ -106,6 +106,23 @@ def main(options):
                 else:
                     for_db['artist'] = artists_obj[0]
 
+                if 'BPM' in data:
+                    for_db['bpm'] = float(data['BPM'].replace(',', '.'))
+
+                if 'YEAR' in data:
+                    for_db['year'] = int(data['YEAR'])
+
+                if 'LANGUAGE' in data:
+                    languages_obj = model.session.query(model.Language).filter(model.Language.name == data['ARTIST']).all()
+
+                    if len(languages_obj) == 0:
+                        language_obj = model.Language(name=data['LANGUAGE'])
+                        model.session.add(language_obj)
+                        for_db['language'] = language_obj
+                    else:
+                        for_db['language'] = languages_obj[0]
+
+
 
                 if 'GENRE' in data:
                     genres = data['GENRE'].split(',')

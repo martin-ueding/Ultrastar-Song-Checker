@@ -32,7 +32,11 @@ def main(options):
 
     results = query.all()
 
-    format_table(results, options)
+    print()
+    if len(results) == 0:
+        print('No results.')
+    else:
+        format_table(results, options)
 
 
 def format_table(elements, options):

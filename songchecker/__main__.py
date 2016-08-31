@@ -32,8 +32,6 @@ def main():
                                   action='store_true',
                                   help='show {} in result table'.format(field))
 
-
-
     options = parser.parse_args()
     if options.func is not None:
         options.func(options)
