@@ -39,10 +39,14 @@ def main(options):
 
     results = query.all()
 
-    print()
     if len(results) == 0:
+        print()
         print('No results.')
+    elif options.paths_only:
+        for element in results:
+            print(element.path)
     else:
+        print()
         format_table(results, options)
 
 

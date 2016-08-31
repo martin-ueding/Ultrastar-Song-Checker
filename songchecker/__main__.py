@@ -32,6 +32,8 @@ def main():
                                   action='store_true',
                                   help='show {} in result table'.format(field))
 
+    query_parser.add_argument('--paths-only', action='store_true')
+
     options = parser.parse_args()
     if options.func is not None:
         options.func(options)
