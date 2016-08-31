@@ -62,8 +62,8 @@ def main(options):
                 # Print meta data if desired.
                 if options.print_data:
                     print(path)
-                    pp.pprint(data)
                     print()
+                    pp.pprint(data)
 
                 # Define a helper function that checks whether the key exists
                 # and the associated file exists in the same directory.
@@ -139,7 +139,11 @@ def main(options):
 
                 # Create a new song object with the fields worked out above.
                 # Then add it to the database and end the transaction.
-                pp.pprint(for_db)
+                if options.print_data:
+                    print()
+                    pp.pprint(for_db)
+                    print()
+                    print()
                 song_obj = model.Song(**for_db)
                 model.session.add(song_obj)
                 model.session.commit()
