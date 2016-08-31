@@ -16,11 +16,11 @@ setup(
         "Programming Language :: Python",
 
     ],
-    name="",
+    name="songchecker",
     packages=find_packages(),
     entry_points={
-        'songchecker': [
-            'songchecker.__main__:main',
+        'console_scripts': [
+            'songchecker = songchecker.__main__:main',
         ],
     },
     install_requires=[
