@@ -85,6 +85,7 @@ def main(options):
                 # dictionary we collect all the data that is going to be
                 # inserted into the database table. 
                 for_db = {
+                        'path': path,
                         'title': data['TITLE'],
                         'has_video': check_for('VIDEO'),
                         }
