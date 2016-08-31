@@ -11,17 +11,17 @@ import sqlalchemy.orm
 from songchecker import model
 
 
-def main(options):
-    query = model.session.query(model.Song)
+def main(options, session):
+    query = session.query(model.Song)
 
     try:
         if options.title is not None:
             print('Filtering title “{}”.'.format(options.title))
-            query = query.filter(model.Song.title.like('%{}%'.format(options.title)))
+            query = query.filter(model.Song.title.like(options.title))
 
         if options.artist is not None:
             print('Filtering artist “{}”.'.format(options.artist))
-            artist_obj = model.session.query(model.Artist).filter(model.Artist.name == options.artist).one()
+            artist_obj = session.query(model.Artist).filter(model.Artist.name.like(options.artist)).one()
             query = query.filter(model.Song.artist == artist_obj)
 
         if options.has_video is not None:
@@ -31,7 +31,7 @@ def main(options):
 
         if options.genre is not None:
             print('Filtering genre “{}”.'.format(options.genre))
-            genre_obj = model.session.query(model.Genre).filter(model.Genre.name == options.genre).one()
+            genre_obj = session.query(model.Genre).filter(model.Genre.name == options.genre).one()
             query = query.outerjoin(model.Song.genres).filter(model.Song.genres.contains(genre_obj))
 
     except sqlalchemy.orm.exc.NoResultFound:

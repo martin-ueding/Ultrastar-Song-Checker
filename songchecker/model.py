@@ -1,12 +1,9 @@
 #!/usr/bin/python3
 # Copyright © 2016 Martin Ueding <dev@martin-ueding.de>
 
-from sqlalchemy import create_engine
 from sqlalchemy import Column, Integer, String, Boolean, Table, ForeignKey, Float
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import relationship, sessionmaker
-
-engine = create_engine('sqlite:///songs.sqlite', echo=False)
+from sqlalchemy.orm import relationship
 
 Base = declarative_base()
 
@@ -94,7 +91,3 @@ class Genre(Base):
         return 'Genre(name={})'.format(repr(self.name))
 
 
-Base.metadata.create_all(engine)
-
-Session = sessionmaker(bind=engine)
-session = Session()

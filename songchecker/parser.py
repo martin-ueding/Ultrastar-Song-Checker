@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#)!/usr/bin/python3
 # Copyright © 2016 Martin Ueding <dev@martin-ueding.de>
 
 import os
@@ -37,7 +37,7 @@ def referred_exists(dirname, filename):
     return os.path.isfile(os.path.join(dirname, filename))
 
 
-def main(options):
+def main(options, session):
     pp = pprint.PrettyPrinter()
 
     # List for broken files.
@@ -93,13 +93,13 @@ def main(options):
                 # If the artist is known in the database, we want to use that
                 # one. For this we query all the artists that have the same
                 # name as the current song has in its file.
-                artists_obj = model.session.query(model.Artist).filter(model.Artist.name == data['ARTIST']).all()
+                artists_obj = session.query(model.Artist).filter(model.Artist.name == data['ARTIST']).all()
 
                 # If there is no artist in the database, create a new one and
                 # assign it to our song.
                 if len(artists_obj) == 0:
                     artist_obj = model.Artist(name=data['ARTIST'])
-                    model.session.add(artist_obj)
+                    session.add(artist_obj)
                     for_db['artist'] = artist_obj
                 # If there is one or more artists with the same name, use the
                 # first one. Ideally, there should never occur since the `name`
@@ -114,11 +114,11 @@ def main(options):
                     for_db['year'] = int(data['YEAR'])
 
                 if 'LANGUAGE' in data:
-                    languages_obj = model.session.query(model.Language).filter(model.Language.name == data['ARTIST']).all()
+                    languages_obj = session.query(model.Language).filter(model.Language.name == data['ARTIST']).all()
 
                     if len(languages_obj) == 0:
                         language_obj = model.Language(name=data['LANGUAGE'])
-                        model.session.add(language_obj)
+                        session.add(language_obj)
                         for_db['language'] = language_obj
                     else:
                         for_db['language'] = languages_obj[0]
@@ -130,10 +130,10 @@ def main(options):
                     for_db['genres'] = []
 
                     for genre in genres:
-                        genres_obj = model.session.query(model.Genre).filter(model.Genre.name == genre).all()
+                        genres_obj = session.query(model.Genre).filter(model.Genre.name == genre).all()
                         if len(genres_obj) == 0:
                             genre_obj = model.Genre(name=genre)
-                            model.session.add(genre_obj)
+                            session.add(genre_obj)
                             for_db['genres'].append(genre_obj)
                         else:
                             for_db['genres'].append(genre_obj[0])
@@ -146,8 +146,8 @@ def main(options):
                     print()
                     print()
                 song_obj = model.Song(**for_db)
-                model.session.add(song_obj)
-                model.session.commit()
+                session.add(song_obj)
+                session.commit()
 
     # Print a list with all broken files to `stderr`.
     for path, message in broken_files:
