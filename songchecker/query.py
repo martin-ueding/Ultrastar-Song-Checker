@@ -3,12 +3,12 @@
 
 import pprint
 
+import prettytable
+
 from songchecker import model
 
 
 def main(options):
-    print(options)
-
     query = model.session.query(model.Song)
 
     if options.title is not None:
@@ -32,5 +32,39 @@ def main(options):
 
     results = query.all()
 
-    pp = pprint.PrettyPrinter()
-    pp.pprint(results)
+    format_table(results, options)
+
+
+def format_table(elements, options):
+    columns = ['Title', 'Artist', 'Genres']
+
+    if options.show_bpm:
+        columns.append('BPM')
+    if options.show_has_video:
+        columns.append('Video')
+    if options.show_year:
+        columns.append('Year')
+    if options.show_language:
+        columns.append('Language')
+
+    table = prettytable.PrettyTable(columns)
+    table.align = 'l'
+
+    for element in elements:
+        row = [
+            str(element.title),
+            str(element.artist),
+            ', '.join(map(str, element.genres)),
+        ]
+
+        if options.show_bpm:
+            row.append(str(element.bpm))
+        if options.show_has_video:
+            row.append(str(element.has_video))
+        if options.show_year:
+            row.append(str(element.year))
+        if options.show_language:
+            row.append(str(element.language))
+
+        table.add_row(row)
+    print(table)

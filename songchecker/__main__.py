@@ -22,10 +22,17 @@ def main():
 
     query_parser = subparsers.add_parser('query', description='Query the database')
     query_parser.set_defaults(func=songchecker.query.main)
-    query_parser.add_argument('--artist')
-    query_parser.add_argument('--genre')
-    query_parser.add_argument('--title')
+    query_parser.add_argument('--title', help='filter by title')
+    query_parser.add_argument('--artist', help='filter by artist')
+    query_parser.add_argument('--genre', help='filter by genre')
     query_parser.add_argument('--has-video', choices=['true', 'false'])
+
+    for field in ['bpm', 'has_video', 'year', 'language', 'genres']:
+        query_parser.add_argument('--show-{}'.format(field.replace('_', '-')), 
+                                  action='store_true',
+                                  help='show {} in result table'.format(field))
+
+
 
     options = parser.parse_args()
     if options.func is not None:
