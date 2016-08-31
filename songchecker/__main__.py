@@ -41,7 +41,7 @@ def main():
         query_show_group.add_argument('--show-{}'.format(field.replace('_', '-')), 
                                   action='store_true')
 
-    query_missing_group = query_parser.add_argument_group('missing fields', description='Flags in this section filter for missing data. Multiple flags are combined using a boolean OR.')
+    query_missing_group = query_parser.add_argument_group('missing fields', description='Flags in this section filter the current selection for missing data. Multiple flags are combined using a boolean OR among each other and with an AND to the other filters.')
 
     query_missing_group.add_argument('--missing-genre', action='store_true')
     query_missing_group.add_argument('--missing-year', action='store_true')
