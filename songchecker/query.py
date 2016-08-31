@@ -43,6 +43,9 @@ def main(options):
 
     results = query.all()
 
+    if options.missing_genre:
+        results = [song for song in results if len(song.genres) == 0]
+
     if len(results) == 0:
         print()
         print('No results.')
