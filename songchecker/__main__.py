@@ -34,6 +34,9 @@ def main():
 
     query_parser.add_argument('--paths-only', action='store_true')
 
+    query_parser.add_argument('--missing-genre', action='store_true')
+    query_parser.add_argument('--missing-year', action='store_true')
+
     options = parser.parse_args()
     if options.func is not None:
         options.func(options)
