@@ -23,6 +23,7 @@ def main():
     query_parser = subparsers.add_parser('query', description='Query the database')
     query_parser.set_defaults(func=songchecker.query.main)
     query_parser.add_argument('--artist')
+    query_parser.add_argument('--genre')
     query_parser.add_argument('--title')
     query_parser.add_argument('--has-video', choices=['true', 'false'])
 

@@ -50,7 +50,15 @@ class Song(Base):
         return '“{}” by “{}”'.format(self.title, self.artist.name)
 
     def __repr__(self):
-        return 'Song(title={}, artist={})'.format(repr(self.title), repr(self.artist))
+        return 'Song(title={}, artist={}, genres={} bpm={}, has_video={}, year={}, language={})'.format(
+            repr(self.title),
+            repr(self.artist),
+            repr(self.genres),
+            repr(self.bpm),
+            repr(self.has_video),
+            repr(self.year),
+            repr(self.language),
+        )
 
 
 class Language(Base):
@@ -70,6 +78,11 @@ class Genre(Base):
 
     songs = relationship('Song', secondary=genres_songs_table,
                          back_populates='genres')
+
+    def __repr__(self):
+        return 'Genre(name={})'.format(repr(self.name))
+
+
 
 
 Base.metadata.create_all(engine)

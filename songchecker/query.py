@@ -25,6 +25,11 @@ def main(options):
         has_video = True if options.has_video == 'true' else False
         query = query.filter(model.Song.has_video == has_video)
 
+    if options.genre is not None:
+        print('Filtering genre “{}”.'.format(options.genre))
+        genre_obj = model.session.query(model.Genre).filter(model.Genre.name == options.genre).one()
+        query = query.outerjoin(model.Song.genres).filter(model.Song.genres.contains(genre_obj))
+
     results = query.all()
 
     pp = pprint.PrettyPrinter()
