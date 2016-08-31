@@ -15,6 +15,7 @@ def main():
     parser = argparse.ArgumentParser(description='Helpers for Ultrastar')
     parser.set_defaults(func=None)
     parser.add_argument('--dbfile', default='ultrastar.sqlite', help='path to SQLite database file (default: `%(default)s`)')
+    parser.add_argument('--echo-sql', action='store_true', help='print all SQL commands')
 
     subparsers = parser.add_subparsers()
 
@@ -56,7 +57,7 @@ def main():
 
 
 def init_db(options):
-    engine = create_engine('sqlite:///{}'.format(options.dbfile), echo=False)
+    engine = create_engine('sqlite:///{}'.format(options.dbfile), echo=bool(options.echo_sql))
     songchecker.model.Base.metadata.create_all(engine)
 
     Session = sessionmaker(bind=engine)
