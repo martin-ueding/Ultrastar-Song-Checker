@@ -39,6 +39,7 @@ class Song(Base):
     bpm = Column(Float, nullable=True)
     has_video = Column(Boolean, nullable=False)
     year = Column(Integer, nullable=True)
+    path = Column(String, nullable=False)
 
     language_id = Column(Integer, ForeignKey('languages.id'))
     language = relationship('Language', back_populates=__tablename__)
@@ -53,7 +54,7 @@ class Song(Base):
         return '“{}” by “{}”'.format(self.title, self.artist.name)
 
     def __repr__(self):
-        return 'Song(title={}, artist={}, genres={} bpm={}, has_video={}, year={}, language={})'.format(
+        return 'Song(title={}, artist={}, genres={} bpm={}, has_video={}, year={}, language={}, path={})'.format(
             repr(self.title),
             repr(self.artist),
             repr(self.genres),
@@ -61,6 +62,7 @@ class Song(Base):
             repr(self.has_video),
             repr(self.year),
             repr(self.language),
+            repr(self.path),
         )
 
 

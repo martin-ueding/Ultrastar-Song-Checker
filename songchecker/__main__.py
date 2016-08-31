@@ -27,7 +27,7 @@ def main():
     query_parser.add_argument('--genre', help='filter by genre')
     query_parser.add_argument('--has-video', choices=['true', 'false'])
 
-    for field in ['bpm', 'has_video', 'year', 'language', 'genres']:
+    for field in ['bpm', 'has_video', 'year', 'language', 'genres', 'path']:
         query_parser.add_argument('--show-{}'.format(field.replace('_', '-')), 
                                   action='store_true',
                                   help='show {} in result table'.format(field))

@@ -56,6 +56,8 @@ def format_table(elements, options):
         columns.append('Year')
     if options.show_language:
         columns.append('Language')
+    if options.show_path:
+        columns.append('Path')
 
     table = prettytable.PrettyTable(columns)
     table.align = 'l'
@@ -75,6 +77,8 @@ def format_table(elements, options):
             row.append(str(element.year))
         if options.show_language:
             row.append(str(element.language))
+        if options.show_path:
+            row.append(str(element.path))
 
         table.add_row(row)
     print(table)
