@@ -34,17 +34,17 @@ def main(options):
             genre_obj = model.session.query(model.Genre).filter(model.Genre.name == options.genre).one()
             query = query.outerjoin(model.Song.genres).filter(model.Song.genres.contains(genre_obj))
 
-        if options.missing_year:
-            query = query.filter(model.Song.year.is_(None))
-
     except sqlalchemy.orm.exc.NoResultFound:
         print('Could not find the related object, no results')
         sys.exit(1)
 
     results = query.all()
 
-    if options.missing_genre:
-        results = [song for song in results if len(song.genres) == 0]
+    if options.missing_genre or options.missing_year:
+        results = [song
+                   for song in results
+                   if (options.missing_genre and len(song.genres) == 0)
+                   or (options.missing_year and song.year is None)]
 
     if len(results) == 0:
         print()
