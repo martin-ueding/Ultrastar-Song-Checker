@@ -24,6 +24,9 @@ class Artist(Base):
 
     songs = relationship('Song', back_populates='artist')
 
+    def __repr__(self):
+        return "Artist(name='{}')".format(self.name)
+
 
 class Song(Base):
     __tablename__ = 'songs'
@@ -42,6 +45,12 @@ class Song(Base):
 
     genres = relationship('Genre', secondary=genres_songs_table,
                           back_populates='songs')
+
+    def __str__(self):
+        return '“{}” by “{}”'.format(self.title, self.artist.name)
+
+    def __repr__(self):
+        return "Song(title='{}', artist={})".format(self.title, repr(self.artist))
 
 
 class Language(Base):
