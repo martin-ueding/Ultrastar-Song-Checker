@@ -76,7 +76,7 @@ def main(options, session):
 
                 # If files should be verified, check all the following keys.
                 if options.verify:
-                    keys = ['MP3', 'VIDEO']
+                    keys = ['MP3', 'VIDEO', 'BACKGROUND', 'COVER']
                     for key in keys:
                         if not check_for(key):
                             broken_files.append((path, key))
