@@ -25,7 +25,7 @@ class Artist(Base):
     songs = relationship('Song', back_populates='artist')
 
     def __repr__(self):
-        return "Artist(name='{}')".format(self.name)
+        return 'Artist(name={})'.format(repr(self.name))
 
 
 class Song(Base):
@@ -50,7 +50,7 @@ class Song(Base):
         return '“{}” by “{}”'.format(self.title, self.artist.name)
 
     def __repr__(self):
-        return "Song(title='{}', artist={})".format(self.title, repr(self.artist))
+        return 'Song(title={}, artist={})'.format(repr(self.title), repr(self.artist))
 
 
 class Language(Base):

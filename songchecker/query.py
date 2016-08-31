@@ -11,8 +11,14 @@ def main(options):
 
     query = model.session.query(model.Song)
 
+    if options.title is not None:
+        print('Filtering title “{}”.'.format(options.title))
+        query = query.filter(model.Song.title.like('%{}%'.format(options.title)))
+
     if options.artist is not None:
-        query = query.filter(model.Artist.name == options.artist)
+        print('Filtering artist “{}”.'.format(options.artist))
+        artist_obj = model.session.query(model.Artist).filter(model.Artist.name == options.artist).one()
+        query = query.filter(model.Song.artist == artist_obj)
 
     results = query.all()
 
