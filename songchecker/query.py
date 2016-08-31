@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 # Copyright © 2016 Martin Ueding <dev@martin-ueding.de>
 
+import shlex
 import sys
 
 import pprint
@@ -78,7 +79,7 @@ def format_table(elements, options):
         if options.show_language:
             row.append(str(element.language))
         if options.show_path:
-            row.append(str(element.path))
+            row.append(shlex.quote(element.path))
 
         table.add_row(row)
     print(table)
