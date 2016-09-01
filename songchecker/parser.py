@@ -22,13 +22,12 @@ def meta_file_to_dict(filename):
         bytes_ = f.read()
         detected = chardet.detect(bytes_)
 
-    # Try to open the file with the given encoding. Apparently `chardet`
-    # detects `cp949` when it should be `latin1`. Therefore try the result
-    # from `chardet.detect`. If that does not work, open it again with
-    # `latin1`. If that works, it is `latin1`. If not, there cannot be done
-    # anything more.
+    # Apparently `chardet` is not reliable with short texts. Therefore try
+    # `utf-8` first. If that does not work, try again with `latin1`.
+    # As last resort try the result from `chardet.detect`. If that does not work
+    # there cannot be done anything more.
     try:
-        with open(filename, encoding=detected['encoding']) as f:
+        with open(filename, encoding='utf-8') as f:
             for line in f:
                 match = PATTERN.match(line)
                 if match:
@@ -45,8 +44,17 @@ def meta_file_to_dict(filename):
                         value = match.group(2)
                         data[key] = value
         except UnicodeDecodeError:
-            print('No idea what encoding is in {}. Giving up.'.format(filename))
-            raise
+            try:
+                with open(filename, encoding=detected['encoding']) as f:
+                    for line in f:
+                        match = PATTERN.match(line)
+                        if match:
+                            key = match.group(1)
+                            value = match.group(2)
+                            data[key] = value
+            except UnicodeDecodeError:
+                print('No idea what encoding is in {}. Giving up.'.format(filename))
+                raise
 
     return data
 
