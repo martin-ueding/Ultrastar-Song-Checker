@@ -74,6 +74,9 @@ def main(options, session):
                 if not file.endswith('.txt'):
                     continue
 
+                if file == 'License.txt' or file == 'license.txt':
+                    continue
+
                 # Print the path if desired.
                 if options.print_data:
                     print(path)
