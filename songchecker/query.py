@@ -34,6 +34,11 @@ def main(options, session):
             genre_obj = session.query(model.Genre).filter(model.Genre.name == options.genre).one()
             query = query.outerjoin(model.Song.genres).filter(model.Song.genres.contains(genre_obj))
 
+        if options.language is not None:
+            print('Filtering language “{}”.'.format(options.language))
+            language_obj = session.query(model.Language).filter(model.Language.name.like(options.language)).one()
+            query = query.filter(model.Song.language == language_obj)
+
     except sqlalchemy.orm.exc.NoResultFound:
         print('Could not find the related object, no results')
         sys.exit(1)

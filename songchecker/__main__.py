@@ -33,6 +33,7 @@ def main():
     query_filter_group.add_argument('--title')
     query_filter_group.add_argument('--artist')
     query_filter_group.add_argument('--genre')
+    query_filter_group.add_argument('--language')
     query_filter_group.add_argument('--has-video', choices=['true', 'false'])
 
     query_show_group = query_parser.add_argument_group('show columns', description='Flags in this section enable display of more columns in the result table. The order of the columns is fixed in the program, the order of the flags in the invocation has no effect.')
