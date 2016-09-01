@@ -110,10 +110,10 @@ def main(options, session):
                 if 'BPM' in data:
                     for_db['bpm'] = float(data['BPM'].replace(',', '.'))
 
-                if 'YEAR' in data:
+                if 'YEAR' in data and bool(data['YEAR'].strip()):
                     for_db['year'] = int(data['YEAR'])
 
-                if 'LANGUAGE' in data:
+                if 'LANGUAGE' in data and bool(data['LANGUAGE'].strip()):
                     languages_obj = session.query(model.Language).filter(model.Language.name == data['LANGUAGE']).all()
 
                     if len(languages_obj) == 0:
@@ -123,7 +123,7 @@ def main(options, session):
                     else:
                         for_db['language'] = languages_obj[0]
 
-                if 'GENRE' in data:
+                if 'GENRE' in data and bool(data['GENRE'].strip()):
                     genres = data['GENRE'].split(',')
                     for_db['genres'] = []
 
