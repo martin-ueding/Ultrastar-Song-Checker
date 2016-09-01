@@ -72,7 +72,7 @@ def main(options, session):
                         exists = referred_exists(dirname, data[key])
                         return exists
                     else:
-                        return False
+                        return True
 
                 # If files should be verified, check all the following keys.
                 if options.verify:
