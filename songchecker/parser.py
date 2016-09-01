@@ -74,12 +74,15 @@ def main(options, session):
                 if not file.endswith('.txt'):
                     continue
 
+                # Print the path if desired.
+                if options.print_data:
+                    print(path)
+
                 # Get the meta data.
                 data = meta_file_to_dict(path)
 
                 # Print meta data if desired.
                 if options.print_data:
-                    print(path)
                     print()
                     pp.pprint(data)
 
