@@ -114,7 +114,7 @@ def main(options, session):
                     for_db['year'] = int(data['YEAR'])
 
                 if 'LANGUAGE' in data:
-                    languages_obj = session.query(model.Language).filter(model.Language.name == data['ARTIST']).all()
+                    languages_obj = session.query(model.Language).filter(model.Language.name == data['LANGUAGE']).all()
 
                     if len(languages_obj) == 0:
                         language_obj = model.Language(name=data['LANGUAGE'])
@@ -134,7 +134,7 @@ def main(options, session):
                             session.add(genre_obj)
                             for_db['genres'].append(genre_obj)
                         else:
-                            for_db['genres'].append(genre_obj[0])
+                            for_db['genres'].append(genres_obj[0])
 
                 # Create a new song object with the fields worked out above.
                 # Then add it to the database and end the transaction.
