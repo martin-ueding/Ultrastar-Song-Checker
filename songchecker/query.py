@@ -3,10 +3,11 @@
 
 import shlex
 import sys
-
 import pprint
+
 import prettytable
 import sqlalchemy.orm
+from sqlalchemy import or_
 
 from songchecker import model
 
@@ -21,7 +22,7 @@ def main(options, session):
 
         if options.artist is not None:
             print('Filtering artist “{}”.'.format(options.artist))
-            artist_obj = session.query(model.Artist).filter(model.Artist.name.like(options.artist)).one()
+            artist_obj = session.query(model.Artist).filter(model.Artist.name.like(options.artist)).first()
             query = query.filter(model.Song.artist == artist_obj)
 
         if options.has_video is not None:
@@ -36,8 +37,12 @@ def main(options, session):
 
         if options.language is not None:
             print('Filtering language “{}”.'.format(options.language))
-            language_obj = session.query(model.Language).filter(model.Language.name.like(options.language)).one()
-            query = query.filter(model.Song.language == language_obj)
+            language_objs = session.query(model.Language).filter(model.Language.name.like(options.language)).all()
+            lang_filters = [
+                model.Song.language == language_obj
+                for language_obj in language_objs
+            ]
+            query = query.filter(or_(*lang_filters))
 
     except sqlalchemy.orm.exc.NoResultFound:
         print('Could not find the related object, no results')

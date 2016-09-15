@@ -15,9 +15,21 @@ from songchecker import model
 PATTERN = re.compile(r'^#([^:]+):(.*)$')
 
 
-def meta_file_to_dict(filename):
+def read_file(filename, encoding):
     data = {}
 
+    with open(filename, encoding=encoding) as f:
+        for line in f:
+            match = PATTERN.match(line)
+            if match:
+                key = match.group(1)
+                value = match.group(2)
+                data[key] = value.strip()
+
+    return data
+
+
+def meta_file_to_dict(filename):
     with open(filename, 'rb') as f:
         bytes_ = f.read()
         detected = chardet.detect(bytes_)
@@ -27,36 +39,16 @@ def meta_file_to_dict(filename):
     # As last resort try the result from `chardet.detect`. If that does not work
     # there cannot be done anything more.
     try:
-        with open(filename, encoding='utf-8') as f:
-            for line in f:
-                match = PATTERN.match(line)
-                if match:
-                    key = match.group(1)
-                    value = match.group(2)
-                    data[key] = value
+        return read_file(filename, 'utf-8')
     except UnicodeDecodeError:
         try:
-            with open(filename, encoding='latin1') as f:
-                for line in f:
-                    match = PATTERN.match(line)
-                    if match:
-                        key = match.group(1)
-                        value = match.group(2)
-                        data[key] = value
+            return read_file(filename, 'latin1')
         except UnicodeDecodeError:
             try:
-                with open(filename, encoding=detected['encoding']) as f:
-                    for line in f:
-                        match = PATTERN.match(line)
-                        if match:
-                            key = match.group(1)
-                            value = match.group(2)
-                            data[key] = value
+                return read_file(filename, detected['encoding'])
             except UnicodeDecodeError:
                 print('No idea what encoding is in {}. Giving up.'.format(filename))
                 raise
-
-    return data
 
 
 def referred_exists(dirname, filename):
