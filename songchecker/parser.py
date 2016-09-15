@@ -38,17 +38,13 @@ def meta_file_to_dict(filename):
     # `utf-8` first. If that does not work, try again with `latin1`.
     # As last resort try the result from `chardet.detect`. If that does not work
     # there cannot be done anything more.
-    try:
-        return read_file(filename, 'utf-8')
-    except UnicodeDecodeError:
+    for encoding in ['utf-8', 'latin1', detected['encoding']]:
         try:
-            return read_file(filename, 'latin1')
+            return read_file(filename, encoding)
         except UnicodeDecodeError:
-            try:
-                return read_file(filename, detected['encoding'])
-            except UnicodeDecodeError:
-                print('No idea what encoding is in {}. Giving up.'.format(filename))
-                raise
+            pass
+
+    raise RuntimeError('No idea what encoding is in {}. Giving up.'.format(filename))
 
 
 def referred_exists(dirname, filename):
