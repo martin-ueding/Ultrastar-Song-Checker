@@ -29,16 +29,27 @@ def read_file(filename, encoding):
     return data
 
 
-def meta_file_to_dict(filename):
+def encoding_generator(filename):
+    '''
+    Yields encodings which might decode the given file.
+
+    Apparently ``chardet`` is not reliable with short texts. Therefore try
+    ``utf-8`` first. If that does not work, try again with ``latin1``.  As last
+    resort try the result from ``chardet.detect``. If that does not work there
+    cannot be done anything more.
+
+    :param str filename: Path to file
+    '''
+    yield 'utf-8'
+    yield 'latin1'
+
     with open(filename, 'rb') as f:
         bytes_ = f.read()
-        detected = chardet.detect(bytes_)
+        yield chardet.detect(bytes_)['encoding']
 
-    # Apparently `chardet` is not reliable with short texts. Therefore try
-    # `utf-8` first. If that does not work, try again with `latin1`.
-    # As last resort try the result from `chardet.detect`. If that does not work
-    # there cannot be done anything more.
-    for encoding in ['utf-8', 'latin1', detected['encoding']]:
+
+def meta_file_to_dict(filename):
+    for encoding in encoding_generator(filename):
         try:
             return read_file(filename, encoding)
         except UnicodeDecodeError:
