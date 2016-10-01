@@ -12,7 +12,19 @@ import chardet
 from songchecker import model
 
 
-PATTERN = re.compile(r'^#([^:]+):(.*)$')
+PATTERN = re.compile('''^       # The beginning of the line.
+                     (?:        # A non-result group with
+                     \ufeff     # the BOM
+                     )?         # which may occur.
+                     \#         # The desired hash-symbol
+                     (          # The first group
+                     [^:]       # with a non-colon
+                     +          # that occurs at least once,
+                     )          # that is the keyword.
+                     :          # The actual colon.
+                     (.*)       # Second group with arbitrary content.
+                     $          # End of the line.
+                     ''', re.X)
 
 
 def read_file(filename, encoding):
