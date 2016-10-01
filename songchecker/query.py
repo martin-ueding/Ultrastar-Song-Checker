@@ -63,7 +63,7 @@ def main(options, session):
         print('No results.')
     elif options.paths_only:
         for element in results:
-            print(element.path)
+            print(shlex.quote(element.path))
     else:
         print()
         format_table(results, options)
