@@ -93,7 +93,7 @@ def main(options, session):
                 if not file.endswith('.txt'):
                     continue
 
-                if file == 'License.txt' or file == 'license.txt':
+                if file == 'License.txt' or file == 'license.txt' or file =='INFO.txt':
                     continue
 
                 # Print the path if desired.
